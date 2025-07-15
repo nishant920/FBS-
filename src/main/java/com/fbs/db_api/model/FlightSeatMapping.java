@@ -5,17 +5,12 @@ import jakarta.persistence.*;
 import java.util.UUID;
 @Entity
 @Table(name = "flightseatmapping")
-public class FlightSeatMapping {
+public class FlightSeatMapping extends SeatMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID Id;
+    UUID id;
+
     @ManyToOne
     Flight flight;
-    String className;
-    String range; //1-20
-    int basePrice;
-    int windowPrice;
-    int totalWindow;
-
 }

@@ -1,21 +1,16 @@
 package com.fbs.db_api.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.util.UUID;
-
+@Entity
+@Table(name = "subflightbookedseat")
 public class SubFlightSeatBooked {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID Id;
+    UUID id;
     @ManyToOne
-    SubFlight subFlight;
+    SubFlight flight;
     @ManyToOne
     AppUser bookedBy;
-    String passenger;
-    boolean above18;
-    int seatNumber;
 }

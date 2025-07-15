@@ -5,17 +5,14 @@ import jakarta.persistence.*;
 import java.util.UUID;
 @Entity
 @Table(name = "flightbookedseats")
-public class FlightSeatBooked {
+public class FlightSeatBooked extends SeatBooked {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID Id;
+    UUID id;
     @ManyToOne
     Flight flight;
     @ManyToOne
     AppUser bookedBy;
-    String passenger;
-    boolean above18;
-    int seatNumber;
 
 
 
