@@ -3,6 +3,7 @@ package com.fbs.db_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -11,19 +12,23 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "user")
+@Table(name = "users")
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID Id;
+    UUID id;
     @Column(nullable = false)
-    String Name;
-    @Column(nullable = false, unique = true)
-    String Email;
+    String name;
+    @Column(unique = true, nullable = false)
+    String email;
     @Column(nullable = false)
-    String Password;
+    String password;
+    @Column(unique = true, nullable = false)
+    Long number;
     @Column(nullable = false)
     boolean isVerified;
-    @Column(nullable = false)
-    String UserType;
+    String userType;
+    String status;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

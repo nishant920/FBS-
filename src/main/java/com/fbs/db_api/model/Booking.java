@@ -1,9 +1,11 @@
 package com.fbs.db_api.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 import java.util.UUID;
+@Data
 @Entity
 @Table(name = "bookings")
 public class Booking {
