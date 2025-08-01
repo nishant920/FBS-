@@ -8,6 +8,7 @@ import com.fbs.central_api.models.Airline;
 import com.fbs.central_api.models.AppUser;
 import com.fbs.central_api.utility.Mapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class AirlineService {
       DBApiConnector dbApiConnector;
       UserService userService;
       MailService mailService;
+      @Autowired
       public AirlineService(Mapper mapper, DBApiConnector dbApiConnector, UserService userService, MailService mailService){
           this.mapper=mapper;
           this.dbApiConnector=dbApiConnector;
@@ -68,7 +70,8 @@ public class AirlineService {
         userService.updateUserDetails(airlineAdmin);
 
 
+        mailService.notifyAcceptRequestToAirlineAdmin(airline);
 
-        return
+        return airline;
     }
 }

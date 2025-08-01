@@ -4,17 +4,21 @@ import com.fbs.notification_api.dto.AirlineRegistrationReqDto;
 import com.fbs.notification_api.model.Airline;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Slf4j
+@Service
 public class AppAdminNotificationService {
 
     JavaMailSender javaMailSender;
     TemplateEngine templateEngine;
 
+    @Autowired
     public AppAdminNotificationService(JavaMailSender javaMailSender, TemplateEngine templateEngine){
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
@@ -53,6 +57,7 @@ public class AppAdminNotificationService {
       }catch (Exception e ) {
           log.error(e.getMessage());
       }
+      javaMailSender.send(mimeMessage);
 
     }
 

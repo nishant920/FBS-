@@ -8,10 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/central/airline")
@@ -22,7 +21,9 @@ public class AirlineController {
     public AirlineController(AirlineService airlineService){
         this.airlineService = airlineService;
     }
-
+    /*
+   This method will get called when this particular /api/v1/central/airline/register will get triggered
+    */
     @PostMapping("/register")
     public ResponseEntity registerAirline(@RequestBody AirlineRegistrationDto airlineDetails){
         // Airline Details -> We need to catch that airline details json in an airlineDetailsDTo
@@ -34,5 +35,13 @@ public class AirlineController {
         Airline airline = airlineService.registerAirline(airlineDetails);
         return new ResponseEntity(airline, HttpStatus.CREATED);
     }
+
+    @GetMapping("/request/accept/{airlineId}")
+    public void acceptAirlineRequest(@PathVariable UUID airlineId){
+        log.info("airlineId : " + airlineId.toString());
+        // we will be calling our airlineService to change the status of airline and airline admin to active
+        airlineService.acceptAirline(airlineId);
+    }
+
 
 }

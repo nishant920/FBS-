@@ -6,9 +6,11 @@ import com.fbs.central_api.enums.UserStatus;
 import com.fbs.central_api.enums.UserType;
 import com.fbs.central_api.models.Airline;
 import com.fbs.central_api.models.AppUser;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class Mapper {
     public AppUser mapAirlineDetailsToAppUser(AirlineRegistrationDto airlineDetails){
 

@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+/*
+This class is going contain all the user related logics
+ */
 @Service
 public class UserService {
-DBApiConnector dbApiConnector;
+    DBApiConnector dbApiConnector;
 
     public UserService(DBApiConnector dbApiConnector){
     this.dbApiConnector=dbApiConnector;}

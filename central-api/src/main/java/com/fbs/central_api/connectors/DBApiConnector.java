@@ -22,12 +22,13 @@ import java.util.UUID;
 public class DBApiConnector {
 
     RestTemplate restTemplate;
-    @Autowired
+
     public DBApiConnector(RestTemplate restTemplate){
         this.restTemplate=restTemplate;
+
     }
 
-    @Value("${}db.api.url")
+    @Value("${db.api.url}")
     String dbApiBaseUrl;
 
     public AppUser callCreateUserEndpoint(AppUser user){
@@ -57,7 +58,7 @@ public class DBApiConnector {
     }
 
     public List<AppUser> callGetAllUsersByUserType(String userType){
-        String url = dbApiBaseUrl + "/get/{userType}";
+        String url = dbApiBaseUrl + "/user/get/"+ userType;
 
         RequestEntity request = RequestEntity.get(url).build();
 
@@ -71,6 +72,13 @@ public class DBApiConnector {
         RequestEntity request = RequestEntity.get(url).build();
         ResponseEntity<Airline> resp = restTemplate.exchange(url, HttpMethod.GET, request, Airline.class);
         return resp.getBody();
+    }
+
+    public Airline callUpdateAirlineEndpoint(Airline airline){
+        String url = dbApiBaseUrl + "/airline/update";
+        RequestEntity request = RequestEntity.put(url).body(airline);
+        ResponseEntity<Airline> response = restTemplate.exchange(url, HttpMethod.PUT, request, Airline.class);
+        return response.getBody();
     }
 
     public AppUser callUpdateUserEndpoint(AppUser user){
