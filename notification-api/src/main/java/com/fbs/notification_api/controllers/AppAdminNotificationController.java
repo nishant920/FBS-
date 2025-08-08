@@ -28,7 +28,7 @@ public class AppAdminNotificationController {
     public ResponseEntity airlineRegistrationRequestNotification(@RequestBody AirlineRegistrationReqDto airlineRegistrationReqDto){
         log.info("Inside airlineRegistrationRequestNotification with payload: " + airlineRegistrationReqDto.toString());
         // from here we need to call AppAdminNotificationService
-        // We will calling service layer which will be sending mail to the application admin
+        // We are calling the service layer which will be sending mail to the application admin
         appAdminNotificationService.sendAirlineRegistrationRequestNotification(airlineRegistrationReqDto);
         return new ResponseEntity(new Object(), HttpStatus.OK);
     }

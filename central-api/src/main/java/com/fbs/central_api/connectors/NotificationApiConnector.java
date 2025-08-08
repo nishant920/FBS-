@@ -1,6 +1,7 @@
 package com.fbs.central_api.connectors;
 
 import com.fbs.central_api.dto.AirlineRegistrationReqDto;
+import com.fbs.central_api.dto.AirlineRejectDto;
 import com.fbs.central_api.models.Airline;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -29,9 +30,15 @@ public NotificationApiConnector(RestTemplate restTemplate){
 
     public void notifyAcceptRequestToAirlineAdmin(Airline airline){
         String url = notificationBaseUrl + "/admin/accept-request";
-        RequestEntity request = RequestEntity.put(url).body(airline);
+        RequestEntity<Airline> request = RequestEntity.put(url).body(airline);
         ResponseEntity<Airline> resp = restTemplate.exchange(url, HttpMethod.PUT, request, Airline.class);
 
+    }
+
+    public void notifyRejectRequestToAirlineAdmin(AirlineRejectDto airlineRejectDto){
+        String url = notificationBaseUrl + "/airline/admin/reject-request";
+        RequestEntity request = RequestEntity.put(url).body(airlineRejectDto);
+        ResponseEntity<Object> resp = restTemplate.exchange(url, HttpMethod.PUT, request, Object.class);
     }
 
 }

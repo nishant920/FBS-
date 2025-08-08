@@ -84,8 +84,16 @@ public class DBApiConnector {
     public AppUser callUpdateUserEndpoint(AppUser user){
         String url = dbApiBaseUrl + "/user/update";
         RequestEntity request = RequestEntity.put(url).body(user);
+
         ResponseEntity<AppUser> resp = restTemplate.exchange(url, HttpMethod.PUT, request, AppUser.class);
         return resp.getBody();
     }
+
+   // public AppUser callGetAirlineByAdminIdEndpoint(UUID adminId){
+   //     String url = dbApiBaseUrl + "/airline/get/admin/" +  adminId.toString();
+   //     RequestEntity request = RequestEntity.get(url).build();
+   //     ResponseEntity<Airline> resp = restTemplate.exchange(url, HttpMethod.GET, request, Airline.class);
+   //     return resp.getBody();
+   // }
 
 }

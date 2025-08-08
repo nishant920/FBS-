@@ -1,11 +1,13 @@
 package com.fbs.central_api.services;
 
 import com.fbs.central_api.connectors.DBApiConnector;
+import com.fbs.central_api.connectors.GeminiConnector;
 import com.fbs.central_api.dto.AirlineRegistrationDto;
 import com.fbs.central_api.enums.AirlineStatus;
 import com.fbs.central_api.enums.UserStatus;
 import com.fbs.central_api.models.Airline;
 import com.fbs.central_api.models.AppUser;
+import com.fbs.central_api.models.GeminiApiResponse;
 import com.fbs.central_api.utility.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +24,27 @@ public class AirlineService {
       DBApiConnector dbApiConnector;
       UserService userService;
       MailService mailService;
+      GeminiConnector geminiConnector;
+
       @Autowired
-      public AirlineService(Mapper mapper, DBApiConnector dbApiConnector, UserService userService, MailService mailService){
+      public AirlineService(Mapper mapper, DBApiConnector dbApiConnector, UserService userService, MailService mailService,
+                            GeminiConnector geminiConnector){
           this.mapper=mapper;
           this.dbApiConnector=dbApiConnector;
           this.userService=userService;
           this.mailService=mailService;
+          this.geminiConnector=geminiConnector;
       }
 
     public Airline getAirlineById(UUID airlineId){
         // so, to get the airline by id we need to call database api
         // so, to call database api we require database api connector.
         return dbApiConnector.callGetAirlineByIdEndpoint(airlineId);
+    }
+
+    public Airline updateAirlineDetails(Airline airline){
+          return dbApiConnector.callUpdateAirlineEndpoint(airline);
+
     }
 
     public Airline registerAirline(AirlineRegistrationDto airlineRegistrationDto){
@@ -63,15 +74,37 @@ public class AirlineService {
         Airline airline = getAirlineById(airlineId);
         airline.setStatus(AirlineStatus.ACTIVE.toString());
         airline.setUpdatedAt(LocalDateTime.now());
+        airline = updateAirlineDetails(airline);
+        log.info("airlineId " + airline);
 
         AppUser airlineAdmin = new AppUser();
         airlineAdmin.setStatus(UserStatus.ACTIVE.toString());
         airlineAdmin.setUpdatedAt(LocalDateTime.now());
         userService.updateUserDetails(airlineAdmin);
 
-
         mailService.notifyAcceptRequestToAirlineAdmin(airline);
 
         return airline;
     }
+
+    public void rejectAirlineRequest(UUID airlineId){
+          // Verify the ID of airline is correct or not?
+                // If it is correct -> Then fine else we will throw the exception
+                Airline airline  = this.getAirlineById(airlineId);
+                airline.setStatus(AirlineStatus.REJECTED.toString());
+                this.updateAirlineDetails(airline);
+        // We need to generate rejection reasons
+        String prompt = "Generate Failure Reason for the airline details : " + airline.toString();
+        GeminiApiResponse geminiApiResponse = geminiConnector.callGeminiGenAIEndpoint(prompt);
+        String res = geminiApiResponse.getCandidates().get(0).getContent().getParts().get(0).getText();
+        // We need to mail this result to airline admin that his request got called because of reasons
+        // I need to call notification api such that Airline admin will recive mail that these are the reasons your airline got rejected.
+        // Mail api ->
+        mailService.notifyRejectRequestToAirlineAdmin(airline.getAdmin().getEmail(), airline.getAdmin().getName(), res);
+
+    }
+  ///  public Airline getAirlineByAdminId(UUID adminId){
+  ///      // dbApiConnector to get the airline
+  ///      return dbApiConnector.callGetAirlineByAdminIdEndpoint(adminId);
+  ///  }
 }

@@ -1,5 +1,6 @@
 package com.fbs.notification_api.services;
 
+import com.fbs.notification_api.dto.AirlineRejectDto;
 import com.fbs.notification_api.model.Airline;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,8 @@ public class AirlineNotificationService {
     TemplateEngine templateEngine;
     @Autowired
     public AirlineNotificationService(JavaMailSender javaMailSender, TemplateEngine templateEngine){
-        javaMailSender=this.javaMailSender;
-        templateEngine=this.templateEngine;
+        this.javaMailSender=javaMailSender;
+        this.templateEngine=templateEngine;
     }
 
     public void airlineAcceptRequestNotification(Airline airline){
@@ -43,5 +44,22 @@ public class AirlineNotificationService {
        }
 
 
+    }
+
+    public void notifyAirlineAdminRejectNotification(AirlineRejectDto airlineRejectDto){
+        Context context = new Context();
+        context.setVariable("adminName", airlineRejectDto.getAirlineAdminName());
+        context.setVariable("reason", airlineRejectDto.getRejectReason());
+        String htmlContent = templateEngine.process("reject-airline-dto", context);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        try {
+            mimeMessageHelper.setTo(airlineRejectDto.getAirlineAdminEmail());
+            mimeMessageHelper.setSubject("Registration Request Rejected");
+            mimeMessageHelper.setText(htmlContent, true);
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        javaMailSender.send(mimeMessage);
     }
 }
