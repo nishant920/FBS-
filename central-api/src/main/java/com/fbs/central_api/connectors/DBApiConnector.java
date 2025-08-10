@@ -89,11 +89,20 @@ public class DBApiConnector {
         return resp.getBody();
     }
 
-   // public AppUser callGetAirlineByAdminIdEndpoint(UUID adminId){
-   //     String url = dbApiBaseUrl + "/airline/get/admin/" +  adminId.toString();
-   //     RequestEntity request = RequestEntity.get(url).build();
-   //     ResponseEntity<Airline> resp = restTemplate.exchange(url, HttpMethod.GET, request, Airline.class);
-   //     return resp.getBody();
-   // }
+    public AppUser callGetUserByEmailEndpoint(String email){
+        // Are we having any endpoint related to this.
+        String url = dbApiBaseUrl + "/user/email/" + email;
+        RequestEntity request = RequestEntity.get(url).build();
+        ResponseEntity<AppUser> resp = restTemplate.exchange(url, HttpMethod.GET, request, AppUser.class);
+        return resp.getBody();
+    }
+
+ //  public AppUser callGetAirlineByAdminIdEndpoint(UUID adminId){
+ //      String url = dbApiBaseUrl + "/airline/get/admin/" +  adminId.toString();
+ //      RequestEntity request = RequestEntity.get(url).build();
+ //      ResponseEntity<Airline> resp = restTemplate.exchange(url, HttpMethod.GET, request, Airline.class);
+ //      return resp.getBody();
+ //  }
+
 
 }
