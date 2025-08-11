@@ -38,7 +38,7 @@ public class AuthFilter extends OncePerRequestFilter {
             // We got the token now we need to validate that this token is a genuine token or not.
             boolean isValid = userService.validateToken(token);
             if(isValid == false){
-                // I am not going to set any kind of authentication and i will return from here it self
+                // I am not going to set any kind of authentication and i will return from here itself
                 // before filtering if i am not setting any kind of authetication that
                 // means i am rejecting the reuquest
                 filterChain.doFilter(request, response);

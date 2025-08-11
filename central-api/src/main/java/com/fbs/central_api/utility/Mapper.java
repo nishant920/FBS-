@@ -1,11 +1,13 @@
 package com.fbs.central_api.utility;
 
+import com.fbs.central_api.dto.AircraftRegistrationDto;
 import com.fbs.central_api.dto.AirlineRegistrationDto;
+import com.fbs.central_api.dto.FlightDetailsDto;
+import com.fbs.central_api.dto.SubFlightDto;
 import com.fbs.central_api.enums.AirlineStatus;
 import com.fbs.central_api.enums.UserStatus;
 import com.fbs.central_api.enums.UserType;
-import com.fbs.central_api.models.Airline;
-import com.fbs.central_api.models.AppUser;
+import com.fbs.central_api.models.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -40,5 +42,53 @@ public class Mapper {
                 airline.setUpdatedAt(LocalDateTime.now());
                 return airline;
 
+    }
+
+    public Aircraft mapAircraftDtoToAircraft(AircraftRegistrationDto aircraftRegistrationDto,
+                                             Airline airline){
+        Aircraft aircraft = new Aircraft();
+        aircraft.setAirline(airline);
+        aircraft.setCapacity(aircraftRegistrationDto.getCapacity());
+        aircraft.setManufacturer(aircraftRegistrationDto.getManufacturer());
+        aircraft.setModelName(aircraftRegistrationDto.getModelName());
+        aircraft.setTotalFlights(aircraftRegistrationDto.getTotalFlights());
+        aircraft.setBuildDate(aircraftRegistrationDto.getBuildDate());
+        aircraft.setModelNumber(aircraftRegistrationDto.getModelNumber());
+        return aircraft;
+    }
+
+    public Flight mapFlightDetailsDtoToFightModel(FlightDetailsDto flightDetailsDto,
+                                                  Airline airline,
+                                                  Aircraft aircraft){
+        Flight flight = new Flight();
+        flight.setAirline(airline);
+        flight.setAircraft(aircraft);
+        flight.setConnecting(flightDetailsDto.isConnecting());
+        flight.setBoardingTime(flightDetailsDto.getBoardingTime());
+        flight.setArrivalTime(flightDetailsDto.getArrivalTime());
+        flight.setFlightType(flightDetailsDto.getFlightType());
+        flight.setBoardingMinutes(flightDetailsDto.getBoardingMinutes());
+        flight.setDepartureTime(flightDetailsDto.getDepartureTime());
+        flight.setTotalTime(flightDetailsDto.getTotalTime());
+        flight.setSourceAirport(flightDetailsDto.getSourceAirport());
+        flight.setCreatedAt(LocalDateTime.now());
+        flight.setUpdatedAt(LocalDateTime.now());
+        flight.setDestinationAirport(flightDetailsDto.getDestinationAirport());
+
+        return flight;
+    }
+
+    public SubFlight mapSubFlightDtoToSubFlightModel(SubFlightDto subFlightDto, Flight flight){
+        SubFlight subFlight = new SubFlight();
+        subFlight.setFlight(flight);
+        subFlight.setArrivalTime(subFlightDto.getArrivalTime());
+        subFlight.setBoardingMinutes(subFlightDto.getBoardingMinutes());
+        subFlight.setDepartureTime(subFlightDto.getDepartureTime());
+        subFlight.setPriority(subFlightDto.getPriority());
+        subFlight.setDestinationAirport(subFlightDto.getDestinationAirport());
+        subFlight.setSourceAirport(subFlightDto.getSourceAirport());
+        subFlight.setCreatedAt(LocalDateTime.now());
+        subFlight.setUpdatedAt(LocalDateTime.now());
+        return subFlight;
     }
 }

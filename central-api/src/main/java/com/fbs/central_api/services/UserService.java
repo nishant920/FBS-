@@ -71,4 +71,10 @@ public class UserService {
             return false;
         }
     }
+    public AppUser getUserFromToken(String token){
+        String payload = authUtility.decryptJwtToken(token);
+        String email = payload.split(":")[0];
+        return this.getUserByEmail(email);
+    }
+
 }
