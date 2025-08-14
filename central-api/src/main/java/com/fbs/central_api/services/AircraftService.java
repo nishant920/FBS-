@@ -12,6 +12,8 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AircraftService {
 
@@ -20,12 +22,17 @@ public class AircraftService {
     Mapper mapper;
     DBApiConnector dbApiConnector;
     @Autowired
-    public AircraftService(UserService userService, AirlineService airlineService, Mapper mapper, DBApiConnector dbApiConnector ){
+    public AircraftService(UserService userService, AirlineService airlineService,
+                           Mapper mapper, DBApiConnector dbApiConnector ){
         this.userService=userService;
         this.airlineService=airlineService;
         this.mapper=mapper;
         this.dbApiConnector=dbApiConnector;
 
+    }
+
+    public Aircraft getAirCraftrById(UUID id){
+        return dbApiConnector.callGetAircraftById(id);
     }
 
     public Aircraft registerAircraft(AircraftRegistrationDto aircraftRegistrationDto, String authorization){

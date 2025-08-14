@@ -1,9 +1,6 @@
 package com.fbs.central_api.utility;
 
-import com.fbs.central_api.dto.AircraftRegistrationDto;
-import com.fbs.central_api.dto.AirlineRegistrationDto;
-import com.fbs.central_api.dto.FlightDetailsDto;
-import com.fbs.central_api.dto.SubFlightDto;
+import com.fbs.central_api.dto.*;
 import com.fbs.central_api.enums.AirlineStatus;
 import com.fbs.central_api.enums.UserStatus;
 import com.fbs.central_api.enums.UserType;
@@ -90,5 +87,18 @@ public class Mapper {
         subFlight.setCreatedAt(LocalDateTime.now());
         subFlight.setUpdatedAt(LocalDateTime.now());
         return subFlight;
+    }
+
+    public FlightSeatMapping mapFlightSeatMappingDtoToModel(SeatMappingDto seatMappingDto, Flight flight){
+        FlightSeatMapping flightSeatMapping = new FlightSeatMapping();
+        flightSeatMapping.setFlight(flight);
+        flightSeatMapping.setRange(seatMappingDto.getRange());
+        flightSeatMapping.setClassName(seatMappingDto.getClassName());
+        flightSeatMapping.setBasePrice(seatMappingDto.getBasePrice());
+        flightSeatMapping.setWindowPrice(flightSeatMapping.getWindowPrice());
+        flightSeatMapping.setTotalWindow(flightSeatMapping.getTotalWindow());
+        flightSeatMapping.setCreatedAt(LocalDateTime.now());
+        flightSeatMapping.setUpdatedAt(LocalDateTime.now());
+        return flightSeatMapping;
     }
 }

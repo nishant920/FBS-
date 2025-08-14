@@ -1,16 +1,18 @@
-package com.fbs.central_api.dto;
+package com.fbs.central_api.models;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class SeatMappingDto {
+public class FlightSeatMapping  {
+
+    UUID id;
     String className;
     String range; // 1-20
     int basePrice;
@@ -18,4 +20,6 @@ public class SeatMappingDto {
     int totalWindow;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+    // id	flightId	classname	range	baseprice	windowprice
+    Flight flight;
 }
